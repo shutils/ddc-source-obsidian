@@ -14,6 +14,12 @@ type Params = {
   vault: string;
 };
 
+function isTriggered(input: string) {
+  const listPattern = /^\s*-\s.*/
+  const bracketPattern = /^tags:\s*\[\s*/
+  return listPattern.test(input) || bracketPattern.test(input)
+}
+
 export class Source extends BaseSource<Params> {
   override async gather(args: {
     denops: Denops;
@@ -26,6 +32,9 @@ export class Source extends BaseSource<Params> {
     const currentFilePath = await fn.expand(args.denops, "%:p") as string;
     if (!isInVault(currentFilePath, args.sourceParams.vault)) {
       return [];
+    }
+    if (!isTriggered(args.context.input)) {
+      return []
     }
     let notes: Note[] = [];
     let vault: string;

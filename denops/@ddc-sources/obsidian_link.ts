@@ -16,6 +16,11 @@ type Params = {
   vault: string;
 };
 
+function isTriggered(input: string) {
+  const regex = /.*\[.*/
+  return regex.test(input)
+}
+
 export class Source extends BaseSource<Params> {
   override async gather(args: {
     denops: Denops;
@@ -25,6 +30,9 @@ export class Source extends BaseSource<Params> {
     sourceParams: Params;
     completeStr: string;
   }): Promise<Item[]> {
+    if (!isTriggered(args.context.input)) {
+      return []
+    }
     const currentFilePath = await fn.expand(args.denops, "%:p") as string;
     if (!isInVault(currentFilePath, args.sourceParams.vault)) {
       return [];
@@ -54,7 +62,7 @@ export class Source extends BaseSource<Params> {
       } else {
         linkPath = path.relative(currentFileDir, note.path);
       }
-      const word = `[${display}](${linkPath})`;
+      const word = `${display}](${linkPath})`;
       links.push({
         word,
       });

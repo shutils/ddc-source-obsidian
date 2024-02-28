@@ -6,6 +6,7 @@ License: MIT license
 CONTENTS                                   *ddc-source-obsidian_link-contents*
 
 Introduction		|ddc-source-obsidian_link-introduction|
+Trigger			|ddc-source-obsidian_tag-trigger|
 Params			|ddc-source-obsidian_link-params|
 
 
@@ -15,6 +16,14 @@ INTRODUCTION                           *ddc-source-obsidian_link-introduction*
 This source collects obsidian link in the your vault.
 Returns word only when opening a file in the vault.
 NOTE: This source currently only supports markdown style link.
+
+
+==============================================================================
+TRIGGER                                      *ddc-source-obsidian_tag-trigger*
+
+Link are served when user input matches the following regex pattern:
+
+  regex = /.*\[.*/
 
 
 ==============================================================================
