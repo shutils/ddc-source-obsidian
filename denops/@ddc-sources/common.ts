@@ -72,3 +72,8 @@ export function getPropertyTags(notes: Note[]): string[] {
   });
   return Array.from(tags);
 }
+
+export function isInVault(filePath: string, vault: string) {
+  const common = path.common([filePath, vault]);
+  return vault == common || vault + path.SEPARATOR == common;
+}

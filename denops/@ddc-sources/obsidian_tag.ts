@@ -7,7 +7,7 @@ import {
   Item,
   SourceOptions,
 } from "./deps.ts";
-import { getNotes, getPropertyTags } from "./common.ts";
+import { getNotes, getPropertyTags, isInVault } from "./common.ts";
 import { Note } from "./types.ts";
 
 type Params = {
@@ -23,6 +23,10 @@ export class Source extends BaseSource<Params> {
     sourceParams: Params;
     completeStr: string;
   }): Promise<Item[]> {
+    const currentFilePath = await fn.expand(args.denops, "%:p") as string;
+    if (!isInVault(currentFilePath, args.sourceParams.vault)) {
+      return [];
+    }
     let notes: Note[] = [];
     let vault: string;
     if (args.sourceParams?.vault) {

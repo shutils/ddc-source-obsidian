@@ -9,7 +9,7 @@ import {
   SourceOptions,
   unknownutil as u,
 } from "./deps.ts";
-import { getNotes } from "./common.ts";
+import { getNotes, isInVault } from "./common.ts";
 import { Note } from "./types.ts";
 
 type Params = {
@@ -26,6 +26,9 @@ export class Source extends BaseSource<Params> {
     completeStr: string;
   }): Promise<Item[]> {
     const currentFilePath = await fn.expand(args.denops, "%:p") as string;
+    if (!isInVault(currentFilePath, args.sourceParams.vault)) {
+      return [];
+    }
     const currentFileDir = path.dirname(currentFilePath);
     let vault: string;
     if (args.sourceParams?.vault) {
