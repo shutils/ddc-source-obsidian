@@ -10,7 +10,7 @@ export * as vars from "https://deno.land/x/denops_std@v6.1.0/variable/mod.ts";
 
 export * as unknownutil from "https://deno.land/x/unknownutil@v3.16.3/mod.ts";
 export * as path from "https://deno.land/std@0.217.0/path/mod.ts";
-export * as yaml from "https://deno.land/std@0.99.0/encoding/yaml.ts";
+export * as front_matter from "https://deno.land/std@0.217.0/front_matter/any.ts";
 
 export {
   BaseSource,
