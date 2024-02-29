@@ -6,14 +6,25 @@ License: MIT license
 CONTENTS                                    *ddc-source-obsidian_tag-contents*
 
 Introduction		|ddc-source-obsidian_tag-introduction|
+Trigger			|ddc-source-obsidian_tag-trigger|
 Params			|ddc-source-obsidian_tag-params|
 
 
 ==============================================================================
-INTRODUCTION                           *ddc-source-obsidian_tag-introduction*
+INTRODUCTION                            *ddc-source-obsidian_tag-introduction*
 
 This source collects obsidian tag in the your vault.
+Returns word only when opening a file in the vault.
 NOTE: This source currently only supports yaml front matter style tags.
+
+
+==============================================================================
+TRIGGER                                      *ddc-source-obsidian_tag-trigger*
+
+Tags are served when user input matches the following regex pattern:
+
+  List pattern = /^\s*-\s.*/
+  Bracket pattern = /^tags:\s*\[\s*/
 
 
 ==============================================================================

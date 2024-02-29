@@ -9,12 +9,17 @@ import {
   SourceOptions,
   unknownutil as u,
 } from "./deps.ts";
-import { getNotes } from "./common.ts";
+import { getNotes, isInVault } from "./common.ts";
 import { Note } from "./types.ts";
 
 type Params = {
   vault: string;
 };
+
+function isTriggered(input: string) {
+  const regex = /.*\[.*/
+  return regex.test(input)
+}
 
 export class Source extends BaseSource<Params> {
   override async gather(args: {
@@ -25,7 +30,13 @@ export class Source extends BaseSource<Params> {
     sourceParams: Params;
     completeStr: string;
   }): Promise<Item[]> {
+    if (!isTriggered(args.context.input)) {
+      return []
+    }
     const currentFilePath = await fn.expand(args.denops, "%:p") as string;
+    if (!isInVault(currentFilePath, args.sourceParams.vault)) {
+      return [];
+    }
     const currentFileDir = path.dirname(currentFilePath);
     let vault: string;
     if (args.sourceParams?.vault) {
@@ -51,7 +62,7 @@ export class Source extends BaseSource<Params> {
       } else {
         linkPath = path.relative(currentFileDir, note.path);
       }
-      const word = `[${display}](${linkPath})`;
+      const word = `${display}](${linkPath})`;
       links.push({
         word,
       });
