@@ -31,10 +31,10 @@ Tags are served when user input matches the following regex pattern:
 PARAMS                                        *ddc-source-obsidian_tag-params*
 
                                        *ddc-source-obsidian_tag-params-vault*
-vault
-  Your vault directory path. Notes under this directory will be retrieved.
+vaults
+  Your vault directory paths. Notes under this directory will be retrieved.
 
-  Default: "~/obsidian"
+  Default: ["~/obsidian"]
 
 
 ==============================================================================

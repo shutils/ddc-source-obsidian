@@ -9,15 +9,16 @@ import {
 } from "./deps.ts";
 import { getNotes, getPropertyTags, isInVault } from "./common.ts";
 import { Note } from "./types.ts";
+import { ensureVaults } from "./helper.ts";
 
 type Params = {
-  vault: string;
+  vaults: string[];
 };
 
 function isTriggered(input: string) {
-  const listPattern = /^\s*-\s.*/
-  const bracketPattern = /^tags:\s*\[\s*/
-  return listPattern.test(input) || bracketPattern.test(input)
+  const listPattern = /^\s*-\s.*/;
+  const bracketPattern = /^tags:\s*\[\s*/;
+  return listPattern.test(input) || bracketPattern.test(input);
 }
 
 export class Source extends BaseSource<Params> {
@@ -30,27 +31,24 @@ export class Source extends BaseSource<Params> {
     completeStr: string;
   }): Promise<Item[]> {
     const currentFilePath = await fn.expand(args.denops, "%:p") as string;
-    if (!isInVault(currentFilePath, args.sourceParams.vault)) {
+    const notes: Note[] = [];
+    const vaults = ensureVaults(args.sourceParams.vaults);
+    if (!vaults.some((vault) => isInVault(currentFilePath, vault))) {
       return [];
     }
     if (!isTriggered(args.context.input)) {
-      return []
+      return [];
     }
-    let notes: Note[] = [];
-    let vault: string;
-    if (args.sourceParams?.vault) {
-      vault = args.sourceParams.vault;
-    } else {
-      vault = await fn.expand(args.denops, "~/obsidian") as string;
-    }
-    notes = await getNotes(vault);
+    await Promise.all(vaults.map(async (vault) => {
+      notes.push(...await getNotes(vault));
+    }));
     const tags = getPropertyTags(notes);
     return tags.map((tag) => ({ word: tag }));
   }
 
   override params(): Params {
     return {
-      vault: "~/obsidian",
+      vaults: ["~/obsidian"],
     };
   }
 }
