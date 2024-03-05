@@ -30,10 +30,10 @@ Link are served when user input matches the following regex pattern:
 PARAMS                                       *ddc-source-obsidian_link-params*
 
                                        *ddc-source-obsidian_link-params-vault*
-vault
-  Your vault directory path. Notes under this directory will be retrieved.
+vaults
+  Your vault directory paths. Notes under this directory will be retrieved.
 
-  Default: "~/obsidian"
+  Default: ["~/obsidian"]
 
 
 ==============================================================================
