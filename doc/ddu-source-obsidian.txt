@@ -34,8 +34,8 @@ EXAMPLES                                        *ddc-source-obsidian-examples*
 	call ddc#custom#patch_filetype('markdown', #{
 		\   sources: [ 'obsidian_tag', 'obsidian_link' ],
 		\   sourcesParams: #{
-		\     obsidian_tag: #{ vaults: [expand('~/zettelkasten')] },
-		\     obsidian_link: #{ vaults: [expand('~/zettelkasten')] },
+		\     obsidian_tag: #{ vaults: [{path: expand('~/zettelkasten'), name: "remote"}] },
+		\     obsidian_link: #{ vaults: [{path: expand('~/zettelkasten'), name: "remote"}] },
 		\   }
 		\ })
 <
