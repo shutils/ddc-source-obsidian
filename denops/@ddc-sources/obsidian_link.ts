@@ -10,11 +10,11 @@ import {
   unknownutil as u,
 } from "./deps.ts";
 import { getNotes, isInVault } from "./common.ts";
-import { Note } from "./types.ts";
+import { Note, Vault } from "./types.ts";
 import { ensureVaults } from "./helper.ts";
 
 type Params = {
-  vaults: string[];
+  vaults: Vault[];
 };
 
 function isTriggered(input: string) {
@@ -31,13 +31,14 @@ export class Source extends BaseSource<Params> {
     sourceParams: Params;
     completeStr: string;
   }): Promise<Item[]> {
+    const { denops, sourceParams } = args;
     if (!isTriggered(args.context.input)) {
       return [];
     }
     const currentFilePath = await fn.expand(args.denops, "%:p") as string;
     const currentFileDir = path.dirname(currentFilePath);
-    const vaults = ensureVaults(args.sourceParams.vaults);
-    if (!vaults.some((vault) => isInVault(currentFilePath, vault))) {
+    const vaults = await ensureVaults(denops, sourceParams.vaults);
+    if (!vaults.some((vault) => isInVault(currentFilePath, vault.path))) {
       return [];
     }
     const notes: Note[] = [];
@@ -72,7 +73,7 @@ export class Source extends BaseSource<Params> {
 
   override params(): Params {
     return {
-      vaults: ["~/obsidian"],
+      vaults: [{ path: "~/obsidian", name: "default" }],
     };
   }
 }
