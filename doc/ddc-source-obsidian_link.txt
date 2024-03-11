@@ -19,7 +19,7 @@ NOTE: This source currently only supports markdown style link.
 
 
 ==============================================================================
-TRIGGER                                      *ddc-source-obsidian_tag-trigger*
+TRIGGER                                     *ddc-source-obsidian_link-trigger*
 
 Link are served when user input matches the following regex pattern:
 
